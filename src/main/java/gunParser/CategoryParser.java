@@ -1,27 +1,31 @@
 package gunParser;
 
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
-enum CategoryParser {
+enum CategoryParser
+{
     instance;
 
-    public void parseCategory(String url) {
-        try {
-            Document categoryDoc = PatientLoader.instance.loadUrl(url);
-            Elements lastPageIndex = categoryDoc.select("a.last");
-            if (lastPageIndex.size() > 0) {
-                Element lastPageElem = lastPageIndex.first();
-                String lastPageText = lastPageElem.text();
+    public void parseCategory(String url)
+    {
+        try
+        {
+            WebDriver categoryPage = PatientLoader.instance.loadUrlWithWebDriver(url);
+            WebElement lastPageElem = WebHelper.findElementByCssSelector(categoryPage, "a.last");
+            if (lastPageElem != null)
+            {
+                String lastPageText = lastPageElem.getText();
                 int lastPage = Integer.parseInt(lastPageText);
-
-                for(int i = 1; i <= lastPage; i++){
+                for (int i = 1; i <= lastPage; i++)
+                {
                     CategoryPageParser.instance.parseCategoryPage(url, i);
                 }
             }
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }

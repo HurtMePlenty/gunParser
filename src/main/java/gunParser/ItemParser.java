@@ -1,65 +1,70 @@
 package gunParser;
 
 
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
-enum ItemParser {
+import java.util.List;
+
+enum ItemParser
+{
 
     instance;
 
-    public Item parseItem(String url) {
-        Document itemDoc = PatientLoader.instance.loadUrl(url);
+    public Item parseItem(String url)
+    {
+        WebDriver itemPage = PatientLoader.instance.loadUrlWithWebDriver(url);
 
         Item item = new Item();
-        Elements productNameElems = itemDoc.select("div.product-name");
-        if (!productNameElems.isEmpty()) {
-            Element productNameElem = productNameElems.first();
-            item.productName = productNameElem.text();
+
+        WebElement productNameElem = WebHelper.findElementByCssSelector(itemPage, "div.product-name");
+        if (productNameElem != null)
+        {
+            item.productName = productNameElem.getText();
         }
 
-        Elements skuElems = itemDoc.select("div.sku");
-        if (!skuElems.isEmpty()) {
-            Element skuElem = skuElems.get(1);
-            item.SKU = skuElem.ownText();
+        List<WebElement> skuElem = WebHelper.findElementsByCssSelector(itemPage, "div.sku");
+        if (skuElem.size() > 1)
+        {
+            item.SKU = skuElem.get(1).getText();
         }
 
-        Elements upcElems = itemDoc.select("div.sku");
-        if (!upcElems.isEmpty()) {
-            Element upcElem = upcElems.get(2);
-            item.UPC = upcElem.ownText();
+        List<WebElement> upcElem = WebHelper.findElementsByCssSelector(itemPage, "div.sku");
+        if (upcElem.size() > 2)
+        {
+            item.UPC = upcElem.get(2).getText();
         }
 
-        Elements brandNamesElems = itemDoc.select("div.sku");
-        if (!brandNamesElems.isEmpty()) {
-            Element brandNamesElem = brandNamesElems.get(3);
-            item.brandName = brandNamesElem.ownText();
+        List<WebElement> brandNameElem = WebHelper.findElementsByCssSelector(itemPage, "div.sku");
+        if (brandNameElem.size() > 3)
+        {
+            item.brandName = brandNameElem.get(3).getText();
         }
 
-        Elements categoryElems = itemDoc.select("div.breadcrumbs a");
-        if (!categoryElems.isEmpty()) {
-            Element categoryElem = categoryElems.last();
-            item.category = categoryElem.ownText();
+        List<WebElement> categoryElem = WebHelper.findElementsByCssSelector(itemPage, "div.breadcrumbs a");
+        if (categoryElem.size() > 0)
+        {
+            item.category = categoryElem.get(categoryElem.size() - 1).getText();
         }
 
-        Elements imageUrlElems = itemDoc.select("a.cloud-zoom");
-        if (!imageUrlElems.isEmpty()) {
-            Element imageUrlElem = imageUrlElems.get(0);
-            item.imageUrl = imageUrlElem.attr("href");
+        WebElement imageElem = WebHelper.findElementByCssSelector(itemPage, "a.cloud-zoom");
+        if (imageElem != null)
+        {
+            item.imageUrl = imageElem.getAttribute("href");
         }
 
-        Elements priceElems = itemDoc.select("div.product-type-data span.price");
-        if (!priceElems.isEmpty()) {
-            Element priceElem = priceElems.get(0);
-            item.price = priceElem.ownText().replace("$", "");
+        WebElement priceElem = WebHelper.findElementByCssSelector(itemPage, "div.product-type-data span.price");
+        if (priceElem != null)
+        {
+            item.price = priceElem.getText().replace("$", "");
         }
 
-        Elements descriptionElems = itemDoc.select("div.box-additional.box-tabs div.panel");
-        if (!descriptionElems.isEmpty()) {
-            Element descriptionElem = descriptionElems.get(0);
-            item.description = descriptionElem.html();
+        WebElement descrElem = WebHelper.findElementByCssSelector(itemPage, "div.box-additional.box-tabs div.panel");
+        if (descrElem != null)
+        {
+            item.description = descrElem.getAttribute("innerHTML");
         }
+
         return item;
     }
 
