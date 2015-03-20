@@ -13,6 +13,7 @@ enum ItemParser
 
     public Item parseItem(String url)
     {
+        System.out.println(String.format("Loading item with url = %s", url));
         WebDriver itemPage = PatientLoader.instance.loadUrlWithWebDriver(url);
 
         Item item = new Item();
@@ -24,27 +25,27 @@ enum ItemParser
         }
 
         List<WebElement> skuElem = WebHelper.findElementsByCssSelector(itemPage, "div.sku");
-        if (skuElem.size() > 1)
+        if (skuElem.size() > 2)
         {
-            item.SKU = skuElem.get(1).getText();
+            item.SKU = skuElem.get(2).getAttribute("innerHTML").replaceAll("<.*>", "");
         }
 
         List<WebElement> upcElem = WebHelper.findElementsByCssSelector(itemPage, "div.sku");
-        if (upcElem.size() > 2)
+        if (upcElem.size() > 3)
         {
-            item.UPC = upcElem.get(2).getText();
+            item.UPC = upcElem.get(3).getAttribute("innerHTML").replaceAll("<.*>", "");
         }
 
         List<WebElement> brandNameElem = WebHelper.findElementsByCssSelector(itemPage, "div.sku");
-        if (brandNameElem.size() > 3)
+        if (brandNameElem.size() > 4)
         {
-            item.brandName = brandNameElem.get(3).getText();
+            item.brandName = brandNameElem.get(4).getAttribute("innerHTML").replaceAll("<.*>", "");
         }
 
         List<WebElement> categoryElem = WebHelper.findElementsByCssSelector(itemPage, "div.breadcrumbs a");
         if (categoryElem.size() > 0)
         {
-            item.category = categoryElem.get(categoryElem.size() - 1).getText();
+            item.category = categoryElem.get(categoryElem.size() - 1).getAttribute("innerHTML").replaceAll("<.*>", "");
         }
 
         WebElement imageElem = WebHelper.findElementByCssSelector(itemPage, "a.cloud-zoom");
@@ -56,7 +57,7 @@ enum ItemParser
         WebElement priceElem = WebHelper.findElementByCssSelector(itemPage, "div.product-type-data span.price");
         if (priceElem != null)
         {
-            item.price = priceElem.getText().replace("$", "");
+            item.price = priceElem.getAttribute("innerHTML").replaceAll("<.*>", "").replace("$", "");
         }
 
         WebElement descrElem = WebHelper.findElementByCssSelector(itemPage, "div.box-additional.box-tabs div.panel");
