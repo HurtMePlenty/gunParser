@@ -33,8 +33,6 @@ public class EntryPoint
             //String login = "fgf@fsdf.ru";
             //String pass = "fgfgsdfd";
 
-
-
             WebDriver driver = PatientLoader.instance.loadUrlWithWebDriver("http://gunaccessorysupply.com");
             WebElement element = driver.findElement(By.cssSelector("a[title=\"Log In\"]"));
             element.click();
@@ -44,8 +42,6 @@ public class EntryPoint
             passElem.sendKeys(pass);
             WebElement submitElem = driver.findElement(By.cssSelector("button[id=\"send2\"]"));
             submitElem.click();
-            Set<Cookie> cookieSet = driver.manage().getCookies();
-            PatientLoader.instance.setAuthCookies(cookieSet);
         }
         catch (Exception e)
         {
