@@ -42,7 +42,7 @@ enum CsvBuilder {
         }
 
         for (Item item : itemsList) {
-            builder.append(String.format("\"%s\"",item.productName));
+            builder.append(String.format("\"%s\"", item.productName));
             builder.append(separator);
             builder.append(item.SKU);
             builder.append(separator);
@@ -56,11 +56,11 @@ enum CsvBuilder {
             builder.append(separator);
             builder.append(item.UPC);
             builder.append(separator);
-            builder.append(String.format("\"%s\"",item.description.replace("\n", "")));
+            builder.append(String.format("\"%s\"", item.description.replace("\n", "")));
             builder.append("\n");
         }
         try {
-            Files.append(builder.toString(), file, Charsets.UTF_8);
+            Files.append(builder.toString().replace("&amp;", "&").replace("&nbsp;", " "), file, Charsets.UTF_8);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

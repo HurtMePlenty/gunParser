@@ -13,10 +13,10 @@ enum CategoryPageParser {
 
     instance;
 
-    public List<Item> parseCategoryPage(String url, int page) {
+    public List<Item> parseCategoryPage(String url, int page, int lastPage) {
         final List<Item> result = new ArrayList<Item>();
         String targetUrl = String.format("%s?p=%d", url, page);
-        System.out.println(String.format("Loading page %d with url = %s", page, targetUrl));
+        System.out.println(String.format("Loading page %d/%d with url = %s", page, lastPage, targetUrl));
         WebDriver pageDriver = PatientLoader.instance.loadUrlWithWebDriver(targetUrl);
 
         List<WebElement> products = WebHelper.findElementsByCssSelector(pageDriver, "ul.products-grid a.product-image");

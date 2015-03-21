@@ -21,7 +21,7 @@ enum CategoryParser {
         System.out.println(String.format("This category contains %d pages", lastPage));
         for (int i = 1; i <= lastPage; i++) {
             try {
-                List<Item> pageItems = CategoryPageParser.instance.parseCategoryPage(url, i);
+                List<Item> pageItems = CategoryPageParser.instance.parseCategoryPage(url, i, lastPage);
                 result.addAll(pageItems);
             } catch (Exception e) {
                 e.printStackTrace();

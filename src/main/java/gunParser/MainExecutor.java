@@ -57,7 +57,7 @@ enum MainExecutor {
             System.out.println("----   WARNING!!! WAS UNABLE TO LOAD CONFIG FILE. USING DEFAULT CONFIG  ----");
             e.printStackTrace();
         }
-             /*
+
         if (Config.instance.isUseSeveralThreads()) {
             authorizeLoader(PatientLoader.instance);
             authorizeLoader(PatientLoader.instance2);
@@ -66,7 +66,7 @@ enum MainExecutor {
 
         } else {
             authorizeLoader(PatientLoader.instance);
-        }      */
+        }
 
         collectData();
     }
