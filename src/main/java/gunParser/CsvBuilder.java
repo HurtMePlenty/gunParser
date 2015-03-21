@@ -42,7 +42,7 @@ enum CsvBuilder {
         }
 
         for (Item item : itemsList) {
-            builder.append(String.format("\"%s\"", item.productName));
+            builder.append(String.format("\"%s\"", item.productName.replace("\"", "")));
             builder.append(separator);
             builder.append(item.SKU);
             builder.append(separator);
