@@ -120,6 +120,7 @@ enum MainExecutor {
             } else {
                 Files.append("\n" + categoryUrl, progressFile, Charsets.UTF_8);
             }
+            loadedUrls.add(categoryUrl);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
