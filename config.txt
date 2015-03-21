@@ -1,0 +1,3 @@
+useSeveralThreads=true
+shouldMakeDelays=false
+proxy=88.150.136.178:3128

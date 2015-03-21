@@ -11,10 +11,10 @@ enum ItemParser
 
     instance;
 
-    public Item parseItem(String url)
+    public Item parseItem(String url, PatientLoader loader)
     {
         System.out.println(String.format("Loading item with url = %s", url));
-        WebDriver itemPage = PatientLoader.instance.loadUrlWithWebDriver(url);
+        WebDriver itemPage = loader.loadUrlWithWebDriver(url);
 
         Item item = new Item();
 

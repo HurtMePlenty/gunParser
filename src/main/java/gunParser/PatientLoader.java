@@ -1,5 +1,6 @@
 package gunParser;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
@@ -9,41 +10,42 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import java.util.Random;
 
 
-public enum PatientLoader
-{
+public enum PatientLoader {
 
-    instance;
+    instance,
+    instance2,
+    instance3,
+    instance4;
 
     private WebDriver driver;
 
-    private void initializeDriver()
-    {
-        String proxy = "88.150.136.178:3128";
-        Proxy p = new Proxy();
-        p.setHttpProxy(proxy).setFtpProxy(proxy).setSslProxy(proxy);
+    private void initializeDriver() {
         DesiredCapabilities cap = DesiredCapabilities.phantomjs();
-        cap.setCapability(CapabilityType.PROXY, p);
+        if (!StringUtils.isEmpty(Config.instance.getProxy())) {
+            String proxy = Config.instance.getProxy();
+            Proxy p = new Proxy();
+            p.setHttpProxy(proxy).setFtpProxy(proxy).setSslProxy(proxy);
+            cap.setCapability(CapabilityType.PROXY, p);
+        }
         cap.setCapability("phantomjs.binary.path", "phantomjs.exe");
         driver = new PhantomJSDriver(cap);
     }
 
-    public WebDriver loadUrlWithWebDriver(String url)
-    {
-        if (driver == null)
-        {
+    public WebDriver loadUrlWithWebDriver(String url) {
+        if (driver == null) {
             initializeDriver();
         }
 
-        int randomNum = (int) (Math.random() * 5) + 5;
-        int delay = 700 + randomNum * 150;
-        try
-        {
-            Thread.sleep(delay);
+        if (Config.instance.isShouldMakeDelays()) {
+            int randomNum = (int) (Math.random() * 5) + 5;
+            int delay = 700 + randomNum * 150;
+            try {
+                Thread.sleep(delay);
+            } catch (Exception e) {
+                //suppress
+            }
         }
-        catch (Exception e)
-        {
-            //suppress
-        }
+
         driver.get(url);
         return driver;
     }

@@ -12,6 +12,7 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import java.io.Console;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,5 +23,9 @@ public class EntryPoint
     public static void main(String[] args)
     {
         MainExecutor.instance.run();
+        if(System.console() != null){
+            System.out.println("Successfully finished. Press Enter to exit...");
+            System.console().readLine();
+        }
     }
 }
