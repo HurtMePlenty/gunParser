@@ -104,6 +104,7 @@ enum MainExecutor {
         for (String categoryUrl : categoryUrls) {
             if (loadedUrls.contains(categoryUrl)) {
                 System.out.println(String.format("Category with url %s is skipped - it was already loaded", categoryUrl));
+                continue;
             }
 
             System.out.println(String.format("Start parsing category with url: %s", categoryUrl));

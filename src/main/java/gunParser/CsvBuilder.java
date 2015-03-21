@@ -56,7 +56,11 @@ enum CsvBuilder {
             builder.append(separator);
             builder.append(item.UPC);
             builder.append(separator);
-            builder.append(String.format("\"%s\"", item.description.replace("\n", "")));
+            if(item.description != null) {
+                builder.append(String.format("\"%s\"", item.description.replace("\n", "")));
+            } else {
+                builder.append("");
+            }
             builder.append("\n");
         }
         try {
