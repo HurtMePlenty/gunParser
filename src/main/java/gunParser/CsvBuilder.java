@@ -5,7 +5,6 @@ import com.google.common.io.Files;
 import org.apache.commons.io.Charsets;
 
 import java.io.File;
-import java.util.List;
 
 enum CsvBuilder {
     instance;
@@ -13,7 +12,7 @@ enum CsvBuilder {
     private final String resultFile = "output.csv";
     private final String separator = ";";
 
-    public void writeItems(List<Item> itemsList) {
+    public void writeItem(Item item) {
         StringBuilder builder = new StringBuilder();
         File file = new File(resultFile);
         try {
@@ -41,32 +40,40 @@ enum CsvBuilder {
             throw new RuntimeException(e);
         }
 
-        for (Item item : itemsList) {
-            builder.append(String.format("\"%s\"", item.productName.replace("\"", "")));
-            builder.append(separator);
-            builder.append(item.SKU);
-            builder.append(separator);
-            builder.append(item.brandName);
-            builder.append(separator);
-            builder.append(item.price);
-            builder.append(separator);
-            builder.append(item.category);
-            builder.append(separator);
-            builder.append(item.imageUrl);
-            builder.append(separator);
-            builder.append(item.UPC);
-            builder.append(separator);
-            if(item.description != null) {
-                builder.append(String.format("\"%s\"", item.description.replace("\n", "")));
-            } else {
-                builder.append("");
-            }
-            builder.append("\n");
+        appendSafe(builder, item.productName);
+        builder.append(separator);
+        appendSafe(builder, item.SKU);
+        builder.append(separator);
+        appendSafe(builder, item.brandName);
+        builder.append(separator);
+        appendSafe(builder, item.price);
+        builder.append(separator);
+        appendSafe(builder, item.category);
+        builder.append(separator);
+        appendSafe(builder, item.imageName);
+        builder.append(separator);
+        appendSafe(builder, item.UPC);
+        builder.append(separator);
+        if (item.description != null) {
+            appendSafe(builder, item.description);
+        } else {
+            builder.append("");
         }
-        try {
+        builder.append("\n");
+
+        try
+
+        {
             Files.append(builder.toString().replace("&amp;", "&").replace("&nbsp;", " "), file, Charsets.UTF_8);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
+    private void appendSafe(StringBuilder builder, String data) {
+        if (data != null) {
+            builder.append(data.replace("&amp;", "&").replace("&nbsp;", " ").replace(separator,"").replace("\n", ""));
+        }
+    }
+
 }

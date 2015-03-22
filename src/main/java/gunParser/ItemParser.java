@@ -1,9 +1,14 @@
 package gunParser;
 
 
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 enum ItemParser
@@ -51,13 +56,25 @@ enum ItemParser
         WebElement imageElem = WebHelper.findElementByCssSelector(itemPage, "a.cloud-zoom");
         if (imageElem != null)
         {
-            item.imageUrl = imageElem.getAttribute("href");
+            String imageURL = imageElem.getAttribute("href");
+            if(!StringUtils.isEmpty(imageURL)) {
+                String[] parts = imageURL.split("/");
+                if(parts.length > 0) {
+                    item.imageName = parts[parts.length - 1];
+                    try {
+                        URL imgURL = new URL(imageURL);
+                        item.image = ImageIO.read(imgURL);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
 
         WebElement priceElem = WebHelper.findElementByCssSelector(itemPage, "div.product-type-data span.price");
         if (priceElem != null)
         {
-            item.price = priceElem.getAttribute("innerHTML").replaceAll("<.*>", "").replace("$", "");
+            item.price = priceElem.getAttribute("innerHTML").replaceAll("<.*>", "").replace("$", "").replace(".", ",");
         }
 
         WebElement descrElem = WebHelper.findElementByCssSelector(itemPage, "div.box-additional.box-tabs div.panel");

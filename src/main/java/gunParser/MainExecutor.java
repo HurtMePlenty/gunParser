@@ -15,25 +15,9 @@ import java.util.List;
 enum MainExecutor {
     instance;
 
-    private List<String> loadedUrls = new ArrayList<String>();
-    File progressFile;
 
     public void run() {
 
-        progressFile = new File("progress.txt");
-        if (!progressFile.exists()) {
-            try {
-                progressFile.createNewFile();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            try {
-                loadedUrls = Files.readLines(progressFile, Charsets.UTF_8);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
         try {
             File configFile = new File("config.txt");
 
@@ -73,8 +57,6 @@ enum MainExecutor {
 
     private void authorizeLoader(PatientLoader loader) {
         try {
-            //System.setProperty("http.proxyHost", "88.150.136.178");
-            //System.setProperty("http.proxyPort", "3128");
             String login = "jeff@survivalhour.com";
             String pass = "Tar1234";
 
@@ -102,29 +84,14 @@ enum MainExecutor {
         }
 
         for (String categoryUrl : categoryUrls) {
-            if (loadedUrls.contains(categoryUrl)) {
+            if (ProgressInfo.instance.isAlreadyLoaded(categoryUrl)) {
                 System.out.println(String.format("Category with url %s is skipped - it was already loaded", categoryUrl));
                 continue;
             }
 
             System.out.println(String.format("Start parsing category with url: %s", categoryUrl));
-            List<Item> categoryItems = CategoryParser.instance.parseCategory(categoryUrl);
-            CsvBuilder.instance.writeItems(categoryItems);
-            addProgress(categoryUrl);
+            CategoryParser.instance.parseCategory(categoryUrl);
+            ProgressInfo.instance.addProgress(categoryUrl);
         }
     }
-
-    private void addProgress(String categoryUrl) {
-        try {
-            if (loadedUrls.isEmpty()) {
-                Files.append(categoryUrl, progressFile, Charsets.UTF_8);
-            } else {
-                Files.append("\n" + categoryUrl, progressFile, Charsets.UTF_8);
-            }
-            loadedUrls.add(categoryUrl);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 }

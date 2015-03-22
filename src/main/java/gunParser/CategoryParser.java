@@ -9,8 +9,7 @@ import java.util.List;
 enum CategoryParser {
     instance;
 
-    public List<Item> parseCategory(String url) {
-        List<Item> result = new ArrayList<Item>();
+    public void parseCategory(String url) {
         WebDriver categoryPage = PatientLoader.instance.loadUrlWithWebDriver(url);
         WebElement lastPageElem = WebHelper.findElementByCssSelector(categoryPage, "a.last");
         int lastPage = 1;
@@ -21,14 +20,12 @@ enum CategoryParser {
         System.out.println(String.format("This category contains %d pages", lastPage));
         for (int i = 1; i <= lastPage; i++) {
             try {
-                List<Item> pageItems = CategoryPageParser.instance.parseCategoryPage(url, i, lastPage);
-                result.addAll(pageItems);
+                CategoryPageParser.instance.parseCategoryPage(url, i, lastPage);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        System.out.println(String.format("Category with url = %s parsed. Total items = ", result.size()));
-        return result;
+        System.out.println(String.format("Category with url = %s parsed", url));
     }
 }

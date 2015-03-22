@@ -21,7 +21,10 @@ public enum PatientLoader {
 
     private void initializeDriver() {
         DesiredCapabilities cap = DesiredCapabilities.phantomjs();
-        if (!StringUtils.isEmpty(Config.instance.getProxy())) {
+        String proxyStr = Config.instance.getProxy();
+        if (!StringUtils.isEmpty(proxyStr)) {
+            System.setProperty("http.proxyHost", proxyStr.split(":")[0]);
+            System.setProperty("http.proxyPort", proxyStr.split(":")[1]);
             String proxy = Config.instance.getProxy();
             Proxy p = new Proxy();
             p.setHttpProxy(proxy).setFtpProxy(proxy).setSslProxy(proxy);
