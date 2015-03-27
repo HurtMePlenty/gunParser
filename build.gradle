@@ -22,7 +22,19 @@ jar {
         attributes 'Main-Class': 'gunParser.EntryPoint'
     }
 
-    from {
+    /*from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }   */
+
+    from(configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }) {
+
+        // remove all signature files
+
+        exclude "META-INF/*.SF"
+
+        exclude "META-INF/*.DSA"
+
+        exclude "META-INF/*.RSA"
+
     }
 }

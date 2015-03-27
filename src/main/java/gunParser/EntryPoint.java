@@ -1,27 +1,12 @@
 package gunParser;
 
 
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
-
-import java.io.Console;
-import java.util.Map;
-import java.util.Set;
-
-
 public class EntryPoint
 {
 
     public static void main(String[] args)
     {
+        System.out.println("Started");
         MainExecutor.instance.run();
         if(System.console() != null){
             System.out.println("Successfully finished. Press Enter to exit...");

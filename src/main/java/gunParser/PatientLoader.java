@@ -30,7 +30,7 @@ public enum PatientLoader {
             p.setHttpProxy(proxy).setFtpProxy(proxy).setSslProxy(proxy);
             cap.setCapability(CapabilityType.PROXY, p);
         }
-        cap.setCapability("phantomjs.binary.path", "phantomjs");
+        cap.setCapability("phantomjs.binary.path", "phantomjs.exe");
         driver = new PhantomJSDriver(cap);
     }
 
