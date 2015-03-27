@@ -57,8 +57,8 @@ enum MainExecutor {
 
     private void authorizeLoader(PatientLoader loader) {
         try {
-            String login = "jeff@survivalhour.com";
-            String pass = "Tar1234";
+            String login = "xxxx";
+            String pass = "xxxx";
 
             WebDriver driver = loader.loadUrlWithWebDriver("http://gunaccessorysupply.com");
             WebElement element = driver.findElement(By.cssSelector("a[title=\"Log In\"]"));
